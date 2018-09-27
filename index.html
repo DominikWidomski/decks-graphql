@@ -79,30 +79,35 @@
 						<p class="fragment">
 							Not opinionated about network layer, payload format, or architecture, on the surface simply a query language
 						</p>
-					</section>
-				</section>
-
-				<!-- <section data-background="#A53F2B">
-					<section>
-						<h1>Differences to REST</h1>
-					</section>
-
-					<section>
 						<p>
-							REST has resources, GraphQL has queries and types
-						</p>
-						<p class="fragment">
-							In REST server decides what gets returned, with GraphQL the Client decides
-						</p>
-						<p class="fragment">
-							Quick comparison of a REST endpoint vs a GraphQL field (selectively querying a subset of it)
+							API connection layer / paradigm.
 						</p>
 					</section>
-				</section> -->
+
+
+
+					concepts
+
+					<section>
+						<h2>Single source of truth: GraphQL schema</h2>
+						<p>Strongly typed</p>
+						<p>Requests are validated against it</p>
+						<p>How do we know what nested data we can request? Schema :D it gives a clear definition of the returned data types which we can drill down into</p>
+					</section>
+
+					practically speaking, front end app makes a single request to a graphql endpoint POSTing a graphql query string and receive a JSON object in exact shape we requested.
+				</section>
 
 				<section data-background="#EE4266">
 					<section>
 						<h1>Benefits of GraphQL</h1>
+					</section>
+
+					<section>
+						<h2>Single source of truth: GraphQL schema</h2>
+						<p>Strongly typed</p>
+						<p>Requests are validated against it</p>
+						<p>Navigating the schema. How do we know what nested data we can request? Schema :D it gives a clear definition of the returned data types which we can drill down into</p>
 					</section>
 
 					<section>
@@ -112,54 +117,58 @@
 
 					<section>
 						<h2>No overfetching</h2>
-						<p>less traffic</p>
+						<p>less traffic, no useless data</p>
+					</section>
+
+					<section>
+						<h2>No underfetching</h2>
+						<p>no implicit assumptions on data structures. Get what you request, or request fails.</p>
+						<p>front end handles optional data explicitly, which is specified by the schema</p>
 					</section>
 
 					<section>
 						<h2>Nested data structures</h2>
+
 						<p>querying for relationships</p>
 						<p>Oftentimes a client app needs to request several resources. In REST client might have to request multiple endpoints to be able to tell what to request from a different endpoint etc, unnecessary waterfall network traffic, as we wait for things to come back to be able to to tell what to request again.</p>
 						<p>TODO: Diagram of client vs server traffic here? (Show server work being done to resolve the data in the query, next to network traffic, being the main time sink)</p>
+
+						repo -> author -> profilePicture
 					</section>
 
 					<section>
-						<h2>Single source of truth: GraphQL schema</h2>
-						<p>Typed</p>
-						<p>Requests are validated against it</p>
-    					<p>How do we know what nested data we can request? Schema :D it gives a clear definition of the returned data types which we can drill down into</p>
+						<h2>Front-end driven</h2>
+						<p>
+							Client shapes the query. Needs of the front end drives queries, backend doesn't need to explicitly cater for front end requirements changing.
+						</p>
 					</section>
 
 					<!-- TODO: Maybe this can be under the section where it says it's not opinionated -->
 					<section>
 						<h2>flexibility</h2>
+						
 						<p>It’s something that can be built on top of your existing REST APIs and provided alongside your current REST endpoints</p>
-					</section>
-
-					<section>
-						<h2>Other benefits</h2>
-						<p>Schema stitching</p>
-						<p>Versioning - so, is there anything to inform us of usage of certain deprecated fields so we know when we can remove them?</p>
 					</section>
 
 					<section>
 						<h2>Developer workflow benefits</h2>
 						<p class="fragment">Query “composability"</p>
-					    <p class="fragment">Strongly typed, can be validated at compile time</p>
-					    <p class="fragment">Introspection. (Thanks to the schema again)</p>
-					    <p class="fragment">Automatically documented</p>
-					    <p class="fragment">Can mock the schema resolvers for testing</p>
-					    <p class="fragment">Tooling, like GraphiQL, thanks to strongly typed and introspective schema, again enabling developers to validate queries and expore the API</p>
+						<p class="fragment">Strongly typed, can be validated at compile time</p>
+						<p class="fragment">Introspection. (Thanks to the schema again)</p>
+						<p class="fragment">Automatically documented</p>
+						<p class="fragment">Can mock the schema resolvers for testing</p>
+						<p class="fragment">Tooling, like GraphiQL, thanks to strongly typed and introspective schema, again enabling developers to validate queries and expore the API</p>
 					</section>
 
 
 					<section>
 						<h2>Not React specific</h2>
 						<p>Facebook uses it with React and it’s mostly used as such but it’s agnostic of this and can be used with whatever client side implementation.</p>
-					    <p>It’s a programming language agnostic interface</p>
+						<p>It’s a programming language agnostic interface</p>
 
 						<aside class="notes">
 							<p>
-								Note: I know there's a lot of focus on React these days in Drupal community as it's being used in the UI, however GraphQL is not
+								Note: I know there's a lot of focus on React these days in Drupal community as it's being used in the UI, however GraphQL is not 
 							</p>
 						</aside>
 					</section>
@@ -189,11 +198,14 @@
 							<p>
 								And because you are probably familiar with Drupal, let's touch on how you could get started with this _today_.
 							</p>
+							<p>
+								Using Drupal as a headless CMS
+							</p>
 						</aside>
 					</section>
 
 					<section>
-						<h3>`name of the module`</h3>
+						<h3>Community module</h3>
 						<ul>
 							<li class="fragment">Exposes a graphql endpoint</li>
 							<li class="fragment">Provides graphiql</li>
@@ -239,7 +251,9 @@
 						</section>
 					</section>
 
-					<section>
+					here's how you request it - query string
+
+					<!-- <section>
 						<h2>Fragments</h2>
 
 						<div data-markdown>
@@ -253,13 +267,13 @@
 								```
 							</script>
 						</div>
-					</section>
+					</section> -->
 
 					<section>
-						<h2>"Fragment components"</h2>
+						<h2>Integrating data with components</h2>
 
 						<p>
-							What we decided to call React components that exported their own fragments and handled the data returned from those.
+							We started putting fragments together with integration components which handle and integrate the data with UI components.
 						</p>
 
 						<style>
@@ -345,10 +359,10 @@
 							<script type="text/javascript">
 								```graphql
 								fragment ResponsiveImageSetFragment on ResponsiveImageSet {
-								    imageBase
-								    images {
-								      source
-								      maxWidth
+									imageBase
+									images {
+									  source
+									  maxWidth
 									}
 								}
 								```
@@ -374,6 +388,37 @@
 								This works because the responsive images data is a small set of data that has a well defined usage.
 							</p>
 						</aside>
+					</section>
+
+					<section>
+						<h2>Resolving data</h2>
+
+						<aside class="notes">But how do we get the data in the first place.</aside>
+
+						<div data-markdown contenteditable>
+							<script type="text/javascript">
+								```jsx
+								import gql from "graphql-tag";
+
+								const resolvers = {
+									Query: {
+									  	async getUser(root, args) {
+											const response = await apiRequest("/api/users"
+									  			{ userId: args.id }
+											);
+
+											return User.convert(response.user);
+										}
+									},
+									User: {
+										notifications(root, args) {
+											return await apiRequest("/api/notifications", { userId: args.id });
+										}
+									}
+								};
+								```
+							</script>
+						</div>
 					</section>
 				</section>
 
