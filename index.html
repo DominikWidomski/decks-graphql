@@ -68,23 +68,29 @@
 				</section>
 
 				<section>
-					<h2>Agenda</h2>
+					<h2>Welcome</h2>
 
-					<ul>
+					<!-- <ul>
 						<li>Introduction to GraphQL</li>
 						<li>GraphQL with Drupal</li>
 						<li>Some example code</li>
-					</ul>
+					</ul> -->
 
 					<aside class="notes">
-						I'm glad to welcome you all to Digital Detox.
-						Andy, the organised, and myself have been working for several months at this point with graphql and drupal
-						so we thought it'd be fitting to talk about this technology.
-						I'm here tonight give you a quick glimpse into GraphQL and why it's exciting to us at Digital Detox,
-						and share some of our experiences.
-
-						Full disclosure, I'm myself not the expert here. I'm happy to answer some questions
-						and we can chat after the talks.
+						<ul>
+							<li>Welcome to DD</li>
+							<li>Working with Andy with Drupal and GraphQL, therefore talking about this tech.</li>
+							<li>
+								Quick glimpse.
+								Why it's exciting to DD.
+								Share some experiences.	
+							</li>
+							<li>
+								Full disclosure, I'm myself not the seasoned expert on GraphQL.
+								Introduction + experiences so far.
+								I'm happy to answer some questions and chat after the talks.	
+							</li>
+						</ul>
 					</aside>
 				</section>
 
@@ -98,10 +104,13 @@
 
 						<aside class="notes">
 							<p>
-								API connection layer specification developed and used at Facebook since 2012 and open sourced in 2015, with reference implementation in JavaScript
+								Developer and used at FB since 2012
 							</p>
 							<p>
-								Not opinionated about network layer, payload format, or architecture, on the surface simply a query language
+								Not opinionated about:
+									network layer,
+									payload format,
+									architecture,
 							</p>
 						</aside>
 					</section>
@@ -127,11 +136,9 @@
 						</div>
 
 						<aside class="notes">
-							Between the front and back end sits the schema which defines the strongly typed interface of the API.
+							<p>Between the front and back end sits the schema, which is the single source of truth and defines a strongly typed interface of the API.</p>
 
-							Describes what types and shape of data can be requested by the client.
-
-							Single source of truth.
+							<p>Describes what types and shape of data can be requested by the client.</p>
 
 							<!-- <p>Strongly typed</p>
 							<p>Requests are validated against it</p>
@@ -188,12 +195,21 @@
 						<h2>Front-end driven</h2>
 
 						<aside class="notes">
-							<p>Declarative data fetching.</p>
+							<p></p>
 							<p>
-								At the core of it is the query language, Client decides what to request, specific queries and responses in same shape (query language)
+								At the core of it all is the query language.
 							</p>
 							<p>
-								Client shapes the query. Needs of the front end drives queries, backend doesn't need to explicitly cater for front end requirements changing.
+								Client shapes the query, declares what data to request exactly.
+							</p>
+							<p>
+								Needs of the front end drives queries.
+							</p>
+							<p>
+								Specific queries and responses in same shape (query language)
+							</p>
+							<p>
+								backend doesn't need to explicitly cater for front end requirements changing.
 							</p>
 						</aside>
 					</section>
@@ -210,8 +226,8 @@
 						<h2>No underfetching</h2>
 
 						<aside class="notes">
-							<p>no implicit assumptions on data structures. Get what you request, or request fails.</p>
-							<p>front end handles optional data explicitly, which is specified by the schema</p>
+							<p>No implicit assumptions on data structures. Get what you request, or request fails.</p>
+							<p>Front end handles optional data explicitly, which is specified by the schema</p>
 						</aside>
 					</section>
 
@@ -225,17 +241,7 @@
 							<p>NOTE: Diagram of client vs server traffic here? (Show server work being done to resolve the data in the query, next to network traffic, being the main time sink)</p>
 
 							<p>
-								example, github: repo -> author -> profilePicture
-							</p>
-						</aside>
-					</section>
-
-					<section>
-						<h2>Unopinionated</h2>
-						
-						<aside class="notes">
-							<p>
-								It’s something that can be built on top of your existing REST APIs and provided alongside your current REST endpoints
+								<b>example github</b>: repo -> author -> profilePicture
 							</p>
 						</aside>
 					</section>
@@ -262,8 +268,15 @@
 						<h2>Technology agnostic</h2>
 
 						<aside class="notes">
-							<p>Facebook uses it with React and it’s mostly used as such but it’s agnostic of this and can be used with whatever client side implementation.</p>
-							<p>It’s a programming language agnostic interface</p>
+							<p>
+								Lots of talk of React but it's a language agnostic specification/interface.
+							</p>
+							<p>
+								Any server and client side implementation
+							</p>
+							<p>
+								It’s something that can be built on top of your existing REST APIs and provided alongside your current REST endpoints
+							</p>
 							<p>
 								Note: I know there's a lot of focus on React these days in Drupal community as it's being used in the UI, however GraphQL is not 
 							</p>
@@ -293,23 +306,20 @@
 
 						<aside class="notes">
 							<p>
-								And because you are probably familiar with Drupal, let's touch on how you could get started with this _today_.
+								Community module
 							</p>
 							<p>
-								We are using Drupal as a headless CMS with a GraphQL endpoint provided by a community module.
+								We're using Drupal as a headless CMS with a GraphQL endpoint.
+							</p>
+							<p>
+								You wouldn't necessarily have to worry about the specifics of a lot of the GraphQL implementation
+								as the package auto generates a schema from Drupal's type system.
+							</p>
+							<p>
+								But you have full customisation capabilities of what you may expect from a drupal module.
 							</p>
 						</aside>
 					</section>
-
-					<!-- <section>
-						<h3>Community module</h3>
-						<ul>
-							<li class="fragment">Exposes a graphql endpoint</li>
-							<li class="fragment">Provides graphiql</li>
-							<li class="fragment">Automatically translates data into a GraphQL schema</li>
-							<li class="fragment">Customisation?</li>
-						</ul>
-					</section> -->
 				</section>
 
 				<section data-background="#403F4C">
@@ -472,8 +482,6 @@
 					<section>
 						<h2>Resolving data</h2>
 
-						<aside class="notes">But how do we get the data in the first place.</aside>
-
 						<div data-markdown contenteditable>
 							<script type="text/javascript">
 								```javascript
@@ -496,6 +504,15 @@
 								```
 							</script>
 						</div>
+
+						<aside class="notes">
+							<p>
+								Mentioned earlier you can wrap existing REST endpoints in GraphQL
+							</p>
+							<p>
+								You could resolve your data against various APIs
+							</p>
+						</aside>
 					</section>
 				</section>
 
