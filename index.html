@@ -70,12 +70,6 @@
 				<section>
 					<h2>Welcome</h2>
 
-					<!-- <ul>
-						<li>Introduction to GraphQL</li>
-						<li>GraphQL with Drupal</li>
-						<li>Some example code</li>
-					</ul> -->
-
 					<aside class="notes">
 						<ul>
 							<li>Welcome to DD</li>
@@ -234,14 +228,39 @@
 					<section>
 						<h2>Nested data structures</h2>
 
-						<aside class="notes">
-							<p>querying for relationships</p>
-							<p>Oftentimes a client app needs to request several resources. In REST client might have to request multiple endpoints to be able to tell what to request from a different endpoint etc, unnecessary waterfall network traffic, as we wait for things to come back to be able to to tell what to request again.</p>
+						<div class="fragment">
+							Example: project -> owner -> avatar
+						</div>
 
-							<p>NOTE: Diagram of client vs server traffic here? (Show server work being done to resolve the data in the query, next to network traffic, being the main time sink)</p>
+						<div data-markdown class="fragment">
+							<script type="text/graphql">
+								```javascript
+								project(id: $id) {
+									name
+									owner {
+										name
+										email
+										avatar(size: MOBILE)		
+									}
+								}
+								```
+							</script>
+						</div>
+
+						<aside class="notes">
+							<ul>
+								<li>Modern applications (web and others) are very data thirsty</li>
+								<li>there are many resource models and sources involved</li>
+								<li>they are dependant, need to get one to know what else to request</li>
+								<li>Unnecessary waterfall network traffic</li>
+								<li>GraphQL solves this with its query language, we can request nested structures</li>
+							</ul>
 
 							<p>
 								<b>example github</b>: repo -> author -> profilePicture
+							</p>
+							<p>
+								This would be three resources perhaps, maybe client needs to be aware of different providers
 							</p>
 						</aside>
 					</section>
@@ -254,12 +273,15 @@
 						<p class="fragment">Automatically documented</p>
 						<p class="fragment">Strongly typed, can be validated at compile time</p>
 						<!-- <p class="fragment">Can mock the schema resolvers for testing</p> -->
-						<p class="fragment">Tooling, like GraphiQL, thanks to strongly typed and introspective schema, again enabling developers to validate queries and expore the API</p>
+						<p class="fragment">Tooling</p>
 
 						<aside class="notes">
 							<ol>
 								<li>We're able to compose elements of queries anywhere in the query tree</li>
 								<li>Able to inspect the schema to learn about the data and content types </li>
+								<li>
+									Tools: GraphiQL
+								</li>
 							</ol>
 						</aside>
 					</section>
@@ -297,28 +319,6 @@
 							<li>The New York Times</li>
 							<li>many others</li>
 						</ul>
-					</section>
-				</section>
-
-				<section data-background="#5FA8D3">
-					<section>
-						<h2>GraphQL in Drupal</h2>
-
-						<aside class="notes">
-							<p>
-								Community module
-							</p>
-							<p>
-								We're using Drupal as a headless CMS with a GraphQL endpoint.
-							</p>
-							<p>
-								You wouldn't necessarily have to worry about the specifics of a lot of the GraphQL implementation
-								as the package auto generates a schema from Drupal's type system.
-							</p>
-							<p>
-								But you have full customisation capabilities of what you may expect from a drupal module.
-							</p>
-						</aside>
 					</section>
 				</section>
 
