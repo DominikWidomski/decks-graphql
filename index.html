@@ -60,11 +60,32 @@
 			<div class="slides">
 				<section>
 					<h1>GraphQL</h1>
-					<h3>an introduction</h3>
+					<h3>introduction</h3>
 					<p>27 • 9 • 18</p>
-					<p>
+					<!-- <p>
 						<small>Dominik Widomski @ Digital Detox</small>
-					</p>
+					</p> -->
+				</section>
+
+				<section>
+					<h2>Agenda</h2>
+
+					<ul>
+						<li>Introduction to GraphQL</li>
+						<li>GraphQL with Drupal</li>
+						<li>Some example code</li>
+					</ul>
+
+					<aside class="notes">
+						I'm glad to welcome you all to Digital Detox.
+						Andy, the organised, and myself have been working for several months at this point with graphql and drupal
+						so we thought it'd be fitting to talk about this technology.
+						I'm here tonight give you a quick glimpse into GraphQL and why it's exciting to us at Digital Detox,
+						and share some of our experiences.
+
+						Full disclosure, I'm myself not the expert here. I'm happy to answer some questions
+						and we can chat after the talks.
+					</aside>
 				</section>
 
 				<section data-background="#607B7D">
@@ -73,29 +94,81 @@
 					</section>
 
 					<section>
-						<p>
-							Specification developed and used at Facebook since 2012 and open sourced in 2015, with reference implementation in JavaScript
-						</p>
-						<p class="fragment">
-							Not opinionated about network layer, payload format, or architecture, on the surface simply a query language
-						</p>
-						<p>
-							API connection layer / paradigm.
-						</p>
+						<h2>API specification open sourced by Facebook in 2015</h2>
+
+						<aside class="notes">
+							<p>
+								API connection layer specification developed and used at Facebook since 2012 and open sourced in 2015, with reference implementation in JavaScript
+							</p>
+							<p>
+								Not opinionated about network layer, payload format, or architecture, on the surface simply a query language
+							</p>
+						</aside>
 					</section>
 
 
-
-					concepts
+					<!-- concepts -->
 
 					<section>
-						<h2>Single source of truth: GraphQL schema</h2>
-						<p>Strongly typed</p>
-						<p>Requests are validated against it</p>
-						<p>How do we know what nested data we can request? Schema :D it gives a clear definition of the returned data types which we can drill down into</p>
+						<h2>GraphQL schema</h2>
+
+						<div data-markdown>
+							<script type="text/graphql">
+								```javascript
+								type User {
+									"Full name of the user"
+									name: String!
+
+									"Primary contact email of the user"
+									email: String!
+								}
+								```
+							</script>
+						</div>
+
+						<aside class="notes">
+							Between the front and back end sits the schema which defines the strongly typed interface of the API.
+
+							Describes what types and shape of data can be requested by the client.
+
+							Single source of truth.
+
+							<!-- <p>Strongly typed</p>
+							<p>Requests are validated against it</p>
+							<p>How do we know what nested data we can request? Schema :D it gives a clear definition of the returned data types which we can drill down into</p> -->
+						</aside>
 					</section>
 
-					practically speaking, front end app makes a single request to a graphql endpoint POSTing a graphql query string and receive a JSON object in exact shape we requested.
+					<section>
+						<h2>Request</h2>
+
+						<div data-markdown>
+							<script type="text/graphql">
+								```javascript
+								{
+									user(id: "1") {
+										name
+										email
+									}
+								}
+
+								// returns:
+								{
+									user {
+										name: "Dominik"
+										email: "dominik@digital-detox.co.uk"
+									}
+								}
+								```
+							</script>
+						</div>
+
+						<aside class="notes">
+							<p>
+								Practically speaking, front end app makes a single request to a graphql endpoint POSTing a graphql query string and receive a JSON object in exact shape we requested.
+							</p>
+						</aside>
+					</section>
 				</section>
 
 				<section data-background="#EE4266">
@@ -103,70 +176,94 @@
 						<h1>Benefits of GraphQL</h1>
 					</section>
 
-					<section>
-						<h2>Single source of truth: GraphQL schema</h2>
+					<!-- <section>
+						<h2>GraphQL schema</h2>
+						<p>Single source of truth</p>
 						<p>Strongly typed</p>
-						<p>Requests are validated against it</p>
-						<p>Navigating the schema. How do we know what nested data we can request? Schema :D it gives a clear definition of the returned data types which we can drill down into</p>
-					</section>
+						<p>Server validates requests against the schema</p>
+						<p>Self-introspective, we can navigate the schema. How do we know what nested data we can request? Schema :D it gives a clear definition of the returned data types which we can drill down into</p>
+					</section> -->
 
 					<section>
-						<h2>Declarative data fetching.</h2>
-						<p>At the core of it is the query language, Client decides what to request, specific queries and responses in same shape (query language)</p>
+						<h2>Front-end driven</h2>
+
+						<aside class="notes">
+							<p>Declarative data fetching.</p>
+							<p>
+								At the core of it is the query language, Client decides what to request, specific queries and responses in same shape (query language)
+							</p>
+							<p>
+								Client shapes the query. Needs of the front end drives queries, backend doesn't need to explicitly cater for front end requirements changing.
+							</p>
+						</aside>
 					</section>
 
 					<section>
 						<h2>No overfetching</h2>
-						<p>less traffic, no useless data</p>
+
+						<aside class="notes">
+							<p>less traffic, no useless data</p>
+						</aside>
 					</section>
 
 					<section>
 						<h2>No underfetching</h2>
-						<p>no implicit assumptions on data structures. Get what you request, or request fails.</p>
-						<p>front end handles optional data explicitly, which is specified by the schema</p>
+
+						<aside class="notes">
+							<p>no implicit assumptions on data structures. Get what you request, or request fails.</p>
+							<p>front end handles optional data explicitly, which is specified by the schema</p>
+						</aside>
 					</section>
 
 					<section>
 						<h2>Nested data structures</h2>
 
-						<p>querying for relationships</p>
-						<p>Oftentimes a client app needs to request several resources. In REST client might have to request multiple endpoints to be able to tell what to request from a different endpoint etc, unnecessary waterfall network traffic, as we wait for things to come back to be able to to tell what to request again.</p>
-						<p>TODO: Diagram of client vs server traffic here? (Show server work being done to resolve the data in the query, next to network traffic, being the main time sink)</p>
+						<aside class="notes">
+							<p>querying for relationships</p>
+							<p>Oftentimes a client app needs to request several resources. In REST client might have to request multiple endpoints to be able to tell what to request from a different endpoint etc, unnecessary waterfall network traffic, as we wait for things to come back to be able to to tell what to request again.</p>
 
-						repo -> author -> profilePicture
+							<p>NOTE: Diagram of client vs server traffic here? (Show server work being done to resolve the data in the query, next to network traffic, being the main time sink)</p>
+
+							<p>
+								example, github: repo -> author -> profilePicture
+							</p>
+						</aside>
 					</section>
 
 					<section>
-						<h2>Front-end driven</h2>
-						<p>
-							Client shapes the query. Needs of the front end drives queries, backend doesn't need to explicitly cater for front end requirements changing.
-						</p>
-					</section>
-
-					<!-- TODO: Maybe this can be under the section where it says it's not opinionated -->
-					<section>
-						<h2>flexibility</h2>
+						<h2>Unopinionated</h2>
 						
-						<p>It’s something that can be built on top of your existing REST APIs and provided alongside your current REST endpoints</p>
+						<aside class="notes">
+							<p>
+								It’s something that can be built on top of your existing REST APIs and provided alongside your current REST endpoints
+							</p>
+						</aside>
 					</section>
 
 					<section>
 						<h2>Developer workflow benefits</h2>
+
 						<p class="fragment">Query “composability"</p>
-						<p class="fragment">Strongly typed, can be validated at compile time</p>
-						<p class="fragment">Introspection. (Thanks to the schema again)</p>
+						<p class="fragment">Introspection</p>
 						<p class="fragment">Automatically documented</p>
-						<p class="fragment">Can mock the schema resolvers for testing</p>
+						<p class="fragment">Strongly typed, can be validated at compile time</p>
+						<!-- <p class="fragment">Can mock the schema resolvers for testing</p> -->
 						<p class="fragment">Tooling, like GraphiQL, thanks to strongly typed and introspective schema, again enabling developers to validate queries and expore the API</p>
-					</section>
-
-
-					<section>
-						<h2>Not React specific</h2>
-						<p>Facebook uses it with React and it’s mostly used as such but it’s agnostic of this and can be used with whatever client side implementation.</p>
-						<p>It’s a programming language agnostic interface</p>
 
 						<aside class="notes">
+							<ol>
+								<li>We're able to compose elements of queries anywhere in the query tree</li>
+								<li>Able to inspect the schema to learn about the data and content types </li>
+							</ol>
+						</aside>
+					</section>
+
+					<section>
+						<h2>Technology agnostic</h2>
+
+						<aside class="notes">
+							<p>Facebook uses it with React and it’s mostly used as such but it’s agnostic of this and can be used with whatever client side implementation.</p>
+							<p>It’s a programming language agnostic interface</p>
 							<p>
 								Note: I know there's a lot of focus on React these days in Drupal community as it's being used in the UI, however GraphQL is not 
 							</p>
@@ -179,13 +276,13 @@
 							Some of big companies involved in the open source development and maintenance of the system
 						</p>
 						<ul>
-							<li class="fragment">Facebook</li>
-							<li class="fragment">GitHub</li>
-							<li class="fragment">twitter</li>
-							<li class="fragment">Shopify</li>
-							<li class="fragment">Yelp</li>
-							<li class="fragment">The New York Times</li>
-							<li class="fragment">many others</li>
+							<li>Facebook</li>
+							<li>GitHub</li>
+							<li>twitter</li>
+							<li>Shopify</li>
+							<li>Yelp</li>
+							<li>The New York Times</li>
+							<li>many others</li>
 						</ul>
 					</section>
 				</section>
@@ -199,12 +296,12 @@
 								And because you are probably familiar with Drupal, let's touch on how you could get started with this _today_.
 							</p>
 							<p>
-								Using Drupal as a headless CMS
+								We are using Drupal as a headless CMS with a GraphQL endpoint provided by a community module.
 							</p>
 						</aside>
 					</section>
 
-					<section>
+					<!-- <section>
 						<h3>Community module</h3>
 						<ul>
 							<li class="fragment">Exposes a graphql endpoint</li>
@@ -212,12 +309,12 @@
 							<li class="fragment">Automatically translates data into a GraphQL schema</li>
 							<li class="fragment">Customisation?</li>
 						</ul>
-					</section>
+					</section> -->
 				</section>
 
 				<section data-background="#403F4C">
 					<section>
-						<h2>Some code</h2>
+						<h2>Examples</h2>
 					</section>
 
 					<section>
@@ -227,23 +324,25 @@
 							<div data-markdown>
 								<script type="text/graphql">
 									```javascript
-									type User {
-										"Describes the application profile of the user"
-										profile: UserProfile!
-									}
-
 									enum UserProfileAvatarSize = SMALL | MEDIUM | LARGE
 
-									type UserProfile {
+									type User {
 										"Full name of the user"
 										name: String!
 
-										"Primary contact emaill of the user"
+										"Primary contact email of the user"
 										email: String!
 
 										"URL of the avatar of the user"
 										avatar(size: UserProfileAvatarSize!): String!
-										TODO: Check that this is the correct syntax
+									}
+
+									type Project {
+										"Full name of the project"
+										name: String!
+
+										"Owner of this project"
+										owner: User!
 									}
 									```
 								</script>
@@ -251,7 +350,7 @@
 						</section>
 					</section>
 
-					here's how you request it - query string
+					<!-- here's how you request it - query string -->
 
 					<!-- <section>
 						<h2>Fragments</h2>
@@ -272,10 +371,6 @@
 					<section>
 						<h2>Integrating data with components</h2>
 
-						<p>
-							We started putting fragments together with integration components which handle and integrate the data with UI components.
-						</p>
-
 						<style>
 							.reveal table.spacious {
 								width: 100%;
@@ -285,34 +380,33 @@
 								width: 50%;
 							}
 						</style>
-						<section>
+
+						<section style="font-size: 0.8em">
 							<table class="spacious">
 								<tr>
 									<td style="width: 50%">
 										<div data-markdown>
 											<script type="text/javascript">
-												```jsx
-												// pages/profile.js
-
+												```javascript
 												import gql from "graphql-tag";
-												import * from "./fragments/UserProfile";
+												import * from "./fragments/ProjectOwner";
 
 												export const fragment = gql`
 													query($id: String!) {
-														user(id: $id) {
-															TODO not perfect example, check with vala
-															profile {
-																...UserProfile
+														project(id: $id) {
+															name
+															owner {
+																...ProjectOwner
 															}
 														}
-														${UserProfile.fragment}
+														${ProjectOwner.fragment}
 													}
 												`;
 
-												export default UserProfile = (props) => (
+												export default Project = (props) => (
 													<div>
-														<h2>{props.TODO}</h2>
-														<UserProfile data={props.profile} />
+														<h2>{props.name}</h2>
+														<ProjectOwner owner={props.owner} />
 													</div>
 												);
 												```
@@ -322,22 +416,22 @@
 									<td style="width: 50%">
 										<div data-markdown>
 											<script type="text/javascript">
-												```jsx
-												// fragment/UserProfile.js
-
+												```javascript
 												import gql from "graphql-tag";
 
 												export const fragment = gql`
-													fragment UserProfile on UserProfile {
+													fragment ProjectOwner on User {
 														name
 														email
 														avatar(size: MOBILE)
 													}
 												`;
 
-												export default UserProfile = ({data}) => (
+												export default ProjectOwner = (props) => (
 													<div>
-														<h2>{data.name}</h2>
+														<h2>{props.name}</h2>
+														<p>Email: {props.email}</p>
+														<img src={props.avatar} alt="user avatar">
 													</div>
 												);
 												```
@@ -347,34 +441,16 @@
 								</tr>
 							</table>
 						</section>
-					</section>
-					<!-- Then we can talk about the way we’ve approached working on it in VFRO (without specifying who the project is for).
-					* Fragment components, separating bits of the query.
-					* Pulling in fragments with `graphql-tag`. -->
-
-					<section>
-						<h2>Reusability</h2>
-
-						<div data-markdown>
-							<script type="text/javascript">
-								```graphql
-								fragment ResponsiveImageSetFragment on ResponsiveImageSet {
-									imageBase
-									images {
-									  source
-									  maxWidth
-									}
-								}
-								```
-							</script>
-						</div>
 
 						<aside class="notes">
 							<p>
-								This is a real component from out codebase, it reveals no business logic so I thought it safe to share as a real example.
-								It's rather small but powerful and hugely reusable.
-								We try to use responsive imagery whenever applicable and we defined a single GraphQL type which describes this kind of data.
-								Alongside it we can define this fragment which can then be reused anywhere there are responsive images, alongside the relevant
+								We started putting fragments together with integration components which handle and integrate the data with UI components.
+							</p>
+
+							<p>
+								So above fragment can be reused whenever we need to request information about a user.
+								In this context it was specifically the owner of a project, but this relationship could be defined
+								anywhere in the schema.
 								UI component which consumes the data provided.
 							</p>
 
@@ -389,6 +465,9 @@
 							</p>
 						</aside>
 					</section>
+					<!-- Then we can talk about the way we’ve approached working on it in VFRO (without specifying who the project is for).
+					* Fragment components, separating bits of the query.
+					* Pulling in fragments with `graphql-tag`. -->
 
 					<section>
 						<h2>Resolving data</h2>
@@ -397,17 +476,15 @@
 
 						<div data-markdown contenteditable>
 							<script type="text/javascript">
-								```jsx
+								```javascript
 								import gql from "graphql-tag";
 
 								const resolvers = {
 									Query: {
 									  	async getUser(root, args) {
-											const response = await apiRequest("/api/users"
+											return await apiRequest("/api/users",
 									  			{ userId: args.id }
 											);
-
-											return User.convert(response.user);
 										}
 									},
 									User: {
@@ -420,6 +497,14 @@
 							</script>
 						</div>
 					</section>
+				</section>
+
+				<section>
+					<h2>Questions?</h2>
+				</section>
+
+				<section>
+					<h2>Thank you</h2>
 				</section>
 
 			</div>
