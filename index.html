@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>GraphQL - quick introduction</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="/libs/reveal.js/css/reveal.css">
+		<link rel="stylesheet" href="/libs/reveal.js/css/theme/night.css" id="theme">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="/libs/reveal.js/lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+
+			function changeTheme(name) {
+				document.getElementById('theme').setAttribute('href','/libs/reveal.js/css/theme/'+name+'.css'); return false;
+			}
+
+			window.addEventListener('change-style-one', function() {
+				changeTheme('night');
+			})
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+
+		<style>
+			* {
+				box-sizing: border-box;
+			}
+
+			ul {
+				width: 100%;
+			}
+		</style>
+	</head>
+
+	<body style="background-color: #62B6CB">
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h1>GraphQL</h1>
+					<h3>an introduction</h3>
+					<p>27 • 9 • 18</p>
+					<p>
+						<small>Dominik Widomski @ Digital Detox</small>
+					</p>
+				</section>
+
+				<section data-background="#607B7D">
+					<section>
+						<h1>What is GraphQL</h1>
+					</section>
+
+					<section>
+						<p>
+							Specification developed and used at Facebook since 2012 and open sourced in 2015, with reference implementation in JavaScript
+						</p>
+						<p class="fragment">
+							Not opinionated about network layer, payload format, or architecture, on the surface simply a query language
+						</p>
+					</section>
+				</section>
+
+				<!-- <section data-background="#A53F2B">
+					<section>
+						<h1>Differences to REST</h1>
+					</section>
+
+					<section>
+						<p>
+							REST has resources, GraphQL has queries and types
+						</p>
+						<p class="fragment">
+							In REST server decides what gets returned, with GraphQL the Client decides
+						</p>
+						<p class="fragment">
+							Quick comparison of a REST endpoint vs a GraphQL field (selectively querying a subset of it)
+						</p>
+					</section>
+				</section> -->
+
+				<section data-background="#EE4266">
+					<section>
+						<h1>Benefits of GraphQL</h1>
+					</section>
+
+					<section>
+						<h2>Declarative data fetching.</h2>
+						<p>At the core of it is the query language, Client decides what to request, specific queries and responses in same shape (query language)</p>
+					</section>
+
+					<section>
+						<h2>No overfetching</h2>
+						<p>less traffic</p>
+					</section>
+
+					<section>
+						<h2>Nested data structures</h2>
+						<p>querying for relationships</p>
+						<p>Oftentimes a client app needs to request several resources. In REST client might have to request multiple endpoints to be able to tell what to request from a different endpoint etc, unnecessary waterfall network traffic, as we wait for things to come back to be able to to tell what to request again.</p>
+						<p>TODO: Diagram of client vs server traffic here? (Show server work being done to resolve the data in the query, next to network traffic, being the main time sink)</p>
+					</section>
+
+					<section>
+						<h2>Single source of truth: GraphQL schema</h2>
+						<p>Typed</p>
+						<p>Requests are validated against it</p>
+    					<p>How do we know what nested data we can request? Schema :D it gives a clear definition of the returned data types which we can drill down into</p>
+					</section>
+
+					<!-- TODO: Maybe this can be under the section where it says it's not opinionated -->
+					<section>
+						<h2>flexibility</h2>
+						<p>It’s something that can be built on top of your existing REST APIs and provided alongside your current REST endpoints</p>
+					</section>
+
+					<section>
+						<h2>Other benefits</h2>
+						<p>Schema stitching</p>
+						<p>Versioning - so, is there anything to inform us of usage of certain deprecated fields so we know when we can remove them?</p>
+					</section>
+
+					<section>
+						<h2>Developer workflow benefits</h2>
+						<p class="fragment">Query “composability"</p>
+					    <p class="fragment">Strongly typed, can be validated at compile time</p>
+					    <p class="fragment">Introspection. (Thanks to the schema again)</p>
+					    <p class="fragment">Automatically documented</p>
+					    <p class="fragment">Can mock the schema resolvers for testing</p>
+					    <p class="fragment">Tooling, like GraphiQL, thanks to strongly typed and introspective schema, again enabling developers to validate queries and expore the API</p>
+					</section>
+
+
+					<section>
+						<h2>Not React specific</h2>
+						<p>Facebook uses it with React and it’s mostly used as such but it’s agnostic of this and can be used with whatever client side implementation.</p>
+					    <p>It’s a programming language agnostic interface</p>
+
+						<aside class="notes">
+							<p>
+								Note: I know there's a lot of focus on React these days in Drupal community as it's being used in the UI, however GraphQL is not
+							</p>
+						</aside>
+					</section>
+
+					<section>
+						<h2>Active ecosystem</h2>
+						<p>
+							Some of big companies involved in the open source development and maintenance of the system
+						</p>
+						<ul>
+							<li class="fragment">Facebook</li>
+							<li class="fragment">GitHub</li>
+							<li class="fragment">twitter</li>
+							<li class="fragment">Shopify</li>
+							<li class="fragment">Yelp</li>
+							<li class="fragment">The New York Times</li>
+							<li class="fragment">many others</li>
+						</ul>
+					</section>
+				</section>
+
+				<section data-background="#5FA8D3">
+					<section>
+						<h2>GraphQL in Drupal</h2>
+
+						<aside class="notes">
+							<p>
+								And because you are probably familiar with Drupal, let's touch on how you could get started with this _today_.
+							</p>
+						</aside>
+					</section>
+
+					<section>
+						<h3>`name of the module`</h3>
+						<ul>
+							<li class="fragment">Exposes a graphql endpoint</li>
+							<li class="fragment">Provides graphiql</li>
+							<li class="fragment">Automatically translates data into a GraphQL schema</li>
+							<li class="fragment">Customisation?</li>
+						</ul>
+					</section>
+				</section>
+
+				<section data-background="#403F4C">
+					<section>
+						<h2>Some code</h2>
+					</section>
+
+					<section>
+						<h2>Schema</h2>
+
+						<section>
+							<div data-markdown>
+								<script type="text/graphql">
+									```javascript
+									type User {
+										"Describes the application profile of the user"
+										profile: UserProfile!
+									}
+
+									enum UserProfileAvatarSize = SMALL | MEDIUM | LARGE
+
+									type UserProfile {
+										"Full name of the user"
+										name: String!
+
+										"Primary contact emaill of the user"
+										email: String!
+
+										"URL of the avatar of the user"
+										avatar(size: UserProfileAvatarSize!): String!
+										TODO: Check that this is the correct syntax
+									}
+									```
+								</script>
+							</div>
+						</section>
+					</section>
+
+					<section>
+						<h2>Fragments</h2>
+
+						<div data-markdown>
+							<script type="text/javascript">
+								```javascript
+								fragment UserProfile on User {
+									name
+									email
+									avatar(size: SMALL)
+								}
+								```
+							</script>
+						</div>
+					</section>
+
+					<section>
+						<h2>"Fragment components"</h2>
+
+						<p>
+							What we decided to call React components that exported their own fragments and handled the data returned from those.
+						</p>
+
+						<style>
+							.reveal table.spacious {
+								width: 100%;
+							}
+							.reveal table.spacious td {
+								padding: 0;
+								width: 50%;
+							}
+						</style>
+						<section>
+							<table class="spacious">
+								<tr>
+									<td style="width: 50%">
+										<div data-markdown>
+											<script type="text/javascript">
+												```jsx
+												// pages/profile.js
+
+												import gql from "graphql-tag";
+												import * from "./fragments/UserProfile";
+
+												export const fragment = gql`
+													query($id: String!) {
+														user(id: $id) {
+															TODO not perfect example, check with vala
+															profile {
+																...UserProfile
+															}
+														}
+														${UserProfile.fragment}
+													}
+												`;
+
+												export default UserProfile = (props) => (
+													<div>
+														<h2>{props.TODO}</h2>
+														<UserProfile data={props.profile} />
+													</div>
+												);
+												```
+											</script>
+										</div>
+									</td>
+									<td style="width: 50%">
+										<div data-markdown>
+											<script type="text/javascript">
+												```jsx
+												// fragment/UserProfile.js
+
+												import gql from "graphql-tag";
+
+												export const fragment = gql`
+													fragment UserProfile on UserProfile {
+														name
+														email
+														avatar(size: MOBILE)
+													}
+												`;
+
+												export default UserProfile = ({data}) => (
+													<div>
+														<h2>{data.name}</h2>
+													</div>
+												);
+												```
+											</script>
+										</div>
+									</td>
+								</tr>
+							</table>
+						</section>
+					</section>
+					<!-- Then we can talk about the way we’ve approached working on it in VFRO (without specifying who the project is for).
+					* Fragment components, separating bits of the query.
+					* Pulling in fragments with `graphql-tag`. -->
+
+					<section>
+						<h2>Reusability</h2>
+
+						<div data-markdown>
+							<script type="text/javascript">
+								```graphql
+								fragment ResponsiveImageSetFragment on ResponsiveImageSet {
+								    imageBase
+								    images {
+								      source
+								      maxWidth
+									}
+								}
+								```
+							</script>
+						</div>
+
+						<aside class="notes">
+							<p>
+								This is a real component from out codebase, it reveals no business logic so I thought it safe to share as a real example.
+								It's rather small but powerful and hugely reusable.
+								We try to use responsive imagery whenever applicable and we defined a single GraphQL type which describes this kind of data.
+								Alongside it we can define this fragment which can then be reused anywhere there are responsive images, alongside the relevant
+								UI component which consumes the data provided.
+							</p>
+
+							<p>
+								Warning: just because it seems the same doesn't mean it is!
+							</p>
+
+							<p>
+								Remember, when defining your GraphQL schema think about the data types mostly independantly of how they'll be used by specific UI components.
+								It's the job of the client then to request the appropriate information.
+								This works because the responsive images data is a small set of data that has a well defined usage.
+							</p>
+						</aside>
+					</section>
+				</section>
+
+			</div>
+
+		</div>
+
+		<script src="/libs/reveal.js/lib/js/head.min.js"></script>
+		<script src="/libs/reveal.js/js/reveal.js"></script>
+
+		<script>
+
+			// More info https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// More info https://github.com/hakimel/reveal.js#dependencies
+				dependencies: [
+					{ src: '/libs/reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: '/libs/reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: '/libs/reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: '/libs/reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: '/libs/reveal.js/plugin/zoom-js/zoom.js', async: true },
+					{ src: '/libs/reveal.js/plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
